@@ -1,3 +1,6 @@
-<p>
-  fedd works!
-</p>
+<div class="feed">
+  <!--Revisar-->
+  <div *ngFor="let msg of feed" class="message">
+    <app-message [chatMessage]="msg"></app-message>
+  </div>
+</div>
