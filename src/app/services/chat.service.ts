@@ -5,9 +5,6 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import * as firebase from 'firebase/app'
 import { ChatMessage } from '../models/ChatMessage.model';
-import { ql } from '@angular/core/src/render3';
-import { query } from '@angular/core/src/render3/query';
-
 
 @Injectable({
   providedIn: 'root'
@@ -35,12 +32,16 @@ export class ChatService {
     //const email = this.user.email;
     const email1 = 'excz@edu.ec';
     this.chatMessages = this.getMessages();
-    this.chatMessages.push({
-      email: email1,
-//      username: this.username,
-      username: 'test-edu',
+    const afList = this._db.list('mensajes');
+    afList.push({
       message: msg,
-      timeSent: timestamp });
+      email: email1,
+      username: 'test-excz',
+      timeSent: timestamp
+    });
+    const listObservable = afList.snapshotChanges();
+  listObservable.subscribe();
+
     console.log('Llamada a sendMessage()')
   }
 /**
@@ -51,10 +52,9 @@ export class ChatService {
  */
   getMessages(): AngularFireList<ChatMessage[]> {
     //query to create our message feed binding
-    return this._db.list('messages', 
-    query: {
-
-    });
+    return this._db.list('messages', ref =>
+      ref.limitToLast(25)
+    );
   }
 
   getTimeStamp() {

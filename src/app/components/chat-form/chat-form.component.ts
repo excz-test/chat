@@ -17,7 +17,7 @@ export class ChatFormComponent implements OnInit {
   }
 
   send() {
-    console.log(this.message);
+    //console.log(this.message);
     this._chat.sendMessage(this.message);
   }
 
